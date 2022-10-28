@@ -1,8 +1,15 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToMany,
+  JoinTable,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Skill } from './skill.entity';
 
 @Entity('users')
 export class User {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: number;
 
   @Column()
@@ -13,4 +20,10 @@ export class User {
 
   @Column()
   password: string;
+
+  @JoinTable()
+  @ManyToMany(() => Skill, (skill) => skill.users, {
+    cascade: true,
+  })
+  skills: Skill[];
 }
