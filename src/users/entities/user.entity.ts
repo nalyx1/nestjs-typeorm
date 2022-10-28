@@ -10,7 +10,7 @@ import { Skill } from './skill.entity';
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn('uuid')
-  id: number;
+  id: string;
 
   @Column()
   email: string;

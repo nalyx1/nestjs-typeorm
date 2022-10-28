@@ -30,11 +30,16 @@ export class UsersService {
   }
 
   findAll() {
-    return this.userRepository.find();
+    return this.userRepository.find({
+      relations: ['skills'],
+    });
   }
 
-  async findOne(id: number) {
-    const user = await this.userRepository.findOne({ where: { id: id } });
+  async findOne(id: string) {
+    const user = await this.userRepository.findOne({
+      where: { id: id },
+      relations: ['skills'],
+    });
     if (!user) {
       throw new NotFoundException(`Usuário não encontrado`);
     }
@@ -42,7 +47,7 @@ export class UsersService {
     return user;
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto) {
+  async update(id: string, updateUserDto: UpdateUserDto) {
     const skills =
       updateUserDto.skills &&
       (await Promise.all(
@@ -62,7 +67,7 @@ export class UsersService {
     return this.userRepository.save(user);
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     const user = await this.userRepository.findOne({ where: { id: id } });
     if (!user) {
       throw new NotFoundException(`Usuário não encontrado`);
@@ -71,7 +76,7 @@ export class UsersService {
     return this.userRepository.remove(user);
   }
 
-  private async preloadSkillByName(name: string): Promise<Skill> {
+  private async preloadSkillByName(name: string) {
     const skill = await this.skillRepository.findOne({ where: { name: name } });
 
     if (skill) {
