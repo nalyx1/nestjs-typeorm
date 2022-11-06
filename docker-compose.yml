@@ -1,4 +1,5 @@
 version: '3'
+
 services:
   app:
     build: .
@@ -10,6 +11,7 @@ services:
       - .:/home/node/app
     depends_on:
       - db
+
   db:
     build: .docker/postgres
     container_name: nestjs-typeorm-db
@@ -22,6 +24,7 @@ services:
     environment:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=nestjs-typeorm
+
   pgadmin:
     image: dpage/pgadmin4
     container_name: nestjs-typeorm-pgadmin
